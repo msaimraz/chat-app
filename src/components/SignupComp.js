@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import {
     Container, CssBaseline, Avatar, Typography,
-    Button, Grid, Link, makeStyles, Card, CardContent
+    Button, Grid, makeStyles, Card, CardContent
 } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import { LockRounded } from '@material-ui/icons';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { ToastContainer, toast } from 'react-toastify';
@@ -113,6 +114,7 @@ const SignupComp = (props) => {
                                 value={confirmPassword}
                                 autoComplete="off"
                             />
+
                             <Button
                                 type="submit"
                                 fullWidth
@@ -123,7 +125,7 @@ const SignupComp = (props) => {
                             </Button>
                             <Grid container>
                                 <Grid item>
-                                    <Link onClick={props.toggle} className={classes.pointer} variant="body2">
+                                    <Link to='/login' className={classes.pointer} variant="body2">
                                         {"Already have an account? Sign In"}
                                     </Link>
                                 </Grid>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import {Container, CssBaseline, Avatar, Typography, FormControlLabel, Button, Checkbox, Grid, Link, makeStyles, Card, CardContent} from '@material-ui/core';
+import { Link } from 'react-router-dom';
+import { Container, CssBaseline, Avatar, Typography, FormControlLabel, Button, Checkbox, Grid,  makeStyles, Card, CardContent } from '@material-ui/core';
 import { LockRounded } from '@material-ui/icons';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import app from '../firebase/db';
@@ -104,19 +105,15 @@ const LoginComp = (props) => {
                                     color={"#eb4034"}
                                     loading={loading} />
                             ) : (
-                                <Button
-                                    type="submit"
-                                    fullWidth
-                                    variant="contained"
-                                    className={classes.submit}
-                                >
-                                    Sign In
-                                </Button>
+                                
+                                <Button type="submit" fullWidth variant="contained" className={classes.submit}>Sign In</Button>
+
+
                             )}
 
                             <Grid container>
                                 <Grid item>
-                                    <Link onClick={props.toggle} className={classes.pointer} variant="body2">
+                                    <Link to='/signup' className={classes.pointer} variant="body2">
                                         {"Don't have an account? Sign Up"}
                                     </Link>
                                 </Grid>
