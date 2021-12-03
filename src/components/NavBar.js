@@ -1,9 +1,9 @@
 import React , { useState} from 'react';
 import { AppBar, Toolbar, IconButton, Typography, Menu, MenuItem, makeStyles } from '@material-ui/core';
 import { AccountCircle } from '@material-ui/icons';
-import "./Components.css"
 
 const NavBar = (props) => {
+    const classes = useStyles();
     const [auth, setAuth] = useState(true);
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -60,5 +60,15 @@ const NavBar = (props) => {
         </div>
     )
 }
-
+const useStyles = makeStyles((theme) => ({
+    root: {
+        flexGrow: 1
+    },
+    menubackgroud: {
+        background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+    }, 
+    title: {
+        flexGrow: 1
+    }
+}));
 export default NavBar

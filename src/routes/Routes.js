@@ -9,11 +9,11 @@ const Routes = () => {
     return (
         <AppRoutes>
             <Route path="/" element={<Home />} />
-            <Route path="/Signup" element={<Signup />} />
-            <Route path="/Login" element={<Login />} />
-            <Route path="/Home" element={<Dashboard />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/home" element={<Dashboard />} />
         </AppRoutes>
-    );
+    )   
 };
 
 export default Routes;

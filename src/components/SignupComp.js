@@ -1,23 +1,20 @@
-import React, { useState } from 'react';
-import {Container, CssBaseline, Avatar, Typography, FormControlLabel, Button, Checkbox, Grid, Link, makeStyles, Card, CardContent} from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import {
+    Container, CssBaseline, Avatar, Typography,
+    Button, Grid, Link, makeStyles, Card, CardContent
+} from '@material-ui/core';
 import { LockRounded } from '@material-ui/icons';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import app from '../firebase/db';
 import { ToastContainer, toast } from 'react-toastify';
-import { ScaleLoader } from 'react-spinners';
+import 'react-toastify/dist/ReactToastify.css'
+import app from '../firebase/db';
 
-const LoginComp = (props) => {
+
+const SignupComp = (props) => {
     const classes = useStyles();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [rememberme, setRememberMe] = useState(false);
-    const [loading, setLoading] = useState(false);
-
-    const override = `
-    display: block;
-    margin-left: 100px;
-    border-color: red;
-`;
+    const [confirmPassword, setConfirmPassword] = useState('');
 
     const handleEmail = (event) => {
         setEmail(event.target.value);
@@ -25,30 +22,43 @@ const LoginComp = (props) => {
     const handlePassword = (event) => {
         setPassword(event.target.value);
     }
-    const handleCheck = (event) => {
-        setRememberMe(event.target.checked);
+    const handleConfirmPassowerd = (event) => {
+        setConfirmPassword(event.target.value);
     }
-    const handlerLogin = () => {
-        setLoading(true);
+    const handleSignUp = () => {
         app.auth()
-            .signInWithEmailAndPassword(email, password)
+            .createUserWithEmailAndPassword(email, password)
             .then(response => {
-                const { user } = response;
-                const data = {
-                    userId: user.uid,
-                    email: user.email
+                if (response) {
+                    props.toggle();
+                    toast.success('User Registered Successfully');
                 }
-                localStorage.setItem('user', JSON.stringify(data));
-                const storage = localStorage.getItem('user');
-                const loggedInUser = storage !== null ? JSON.parse(storage) : null;
-                props.loggedIn(loggedInUser);
-                setLoading(false);
-            }).catch(error => {
-                toast.error(error.message);
-                setLoading(false);
+            }).catch((error) => {
+                switch (error.code) {
+                    case 'auth/email-already-in-use':
+                        toast.error(error.message);
+                        break;
+                    case 'auth/invalid-email':
+                        toast.error(error.message);
+                        break;
+                    case 'auth/weak-password':
+                        toast.error(error.message);
+                        break;
+                }
             });
-
     }
+
+    useEffect(() => {
+        ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
+            if (value !== password) {
+                return false;
+            }
+            return true;
+        });
+        return () => {
+            ValidatorForm.removeValidationRule('isPasswordMatch');
+        }
+    }, [password])
     return (
         <Container component="main" maxWidth="xs">
             <Card className={classes.card}>
@@ -60,15 +70,10 @@ const LoginComp = (props) => {
                             <LockRounded />
                         </Avatar>
                         <Typography component="h1" variant="h5">
-                            Sign In
+                            Sign Up
                         </Typography>
                         <ValidatorForm
-                            onSubmit={handlerLogin}
-                            onError={errors => {
-                                for (const err of errors) {
-                                    console.log(err.props.errorMessages[0])
-                                }
-                            }}
+                            onSubmit={handleSignUp}
                             className={classes.form}>
                             <TextValidator
                                 variant="outlined"
@@ -80,7 +85,9 @@ const LoginComp = (props) => {
                                 value={email}
                                 validators={['required', 'isEmail']}
                                 errorMessages={['this field is required', 'email is not valid']}
-                                autoComplete='off' />
+                                autoComplete='off'
+                            />
+                            <br />
                             <TextValidator
                                 variant="outlined"
                                 fullWidth
@@ -93,31 +100,31 @@ const LoginComp = (props) => {
                                 errorMessages={['this field is required']}
                                 autoComplete="off"
                             />
-                            <FormControlLabel
-                                control={<Checkbox value={rememberme} onChange={(e) => handleCheck(e)} color="primary" />}
-                                label="Remember me"
+                            <br />
+                            <TextValidator
+                                variant="outlined"
+                                label="Confirm password"
+                                fullWidth
+                                onChange={handleConfirmPassowerd}
+                                name="confirmPassword"
+                                type="password"
+                                validators={['isPasswordMatch', 'required']}
+                                errorMessages={['password mismatch', 'this field is required']}
+                                value={confirmPassword}
+                                autoComplete="off"
                             />
-                            {loading ? (
-                                <ScaleLoader
-                                    css={override}
-                                    size={150}
-                                    color={"#eb4034"}
-                                    loading={loading} />
-                            ) : (
-                                <Button
-                                    type="submit"
-                                    fullWidth
-                                    variant="contained"
-                                    className={classes.submit}
-                                >
-                                    Sign In
-                                </Button>
-                            )}
-
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                className={classes.submit}
+                            >
+                                Sign Up
+                            </Button>
                             <Grid container>
                                 <Grid item>
                                     <Link onClick={props.toggle} className={classes.pointer} variant="body2">
-                                        {"Don't have an account? Sign Up"}
+                                        {"Already have an account? Sign In"}
                                     </Link>
                                 </Grid>
                             </Grid>
@@ -128,7 +135,6 @@ const LoginComp = (props) => {
         </Container>
     );
 }
-
 const useStyles = makeStyles((theme) => ({
     paper: {
         marginTop: theme.spacing(8),
@@ -159,5 +165,6 @@ const useStyles = makeStyles((theme) => ({
         cursor: 'pointer',
         color: 'red'
     }
-}));
-export default LoginComp;
+}))
+
+export default SignupComp

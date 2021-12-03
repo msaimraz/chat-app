@@ -1,5 +1,4 @@
-import firebase from 'firebase/compat/app';
-
+import firebase from 'firebase';
 const firebaseConfig = {
     apiKey: "AIzaSyCihM02A7E6md86_QytotNHbHJ7JKjyM0o",
     authDomain: "chatapp-367e0.firebaseapp.com",
