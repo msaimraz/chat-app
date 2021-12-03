@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Container, CssBaseline, Avatar, Typography, FormControlLabel, Button, Checkbox, Grid,  makeStyles, Card, CardContent } from '@material-ui/core';
+import { Link, useNavigate } from 'react-router-dom';
+import { Container, CssBaseline, Avatar, Typography, FormControlLabel, Button, Checkbox, Grid, makeStyles, Card, CardContent } from '@material-ui/core';
 import { LockRounded } from '@material-ui/icons';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import app from '../firebase/db';
@@ -19,6 +19,7 @@ const LoginComp = (props) => {
     margin-left: 100px;
     border-color: red;
 `;
+    const navi = useNavigate();
 
     const handleEmail = (event) => {
         setEmail(event.target.value);
@@ -28,6 +29,16 @@ const LoginComp = (props) => {
     }
     const handleCheck = (event) => {
         setRememberMe(event.target.checked);
+    }
+    const authSwitch = () => {
+        app.auth()
+            .createUserWithEmailAndPassword(email, password)
+            .then(response => {
+                const { user } = response;
+                if (response) {
+                    navi("/home")
+                }
+            })
     }
     const handlerLogin = () => {
         setLoading(true);
@@ -105,8 +116,8 @@ const LoginComp = (props) => {
                                     color={"#eb4034"}
                                     loading={loading} />
                             ) : (
-                                
-                                <Button type="submit" fullWidth variant="contained" className={classes.submit}>Sign In</Button>
+
+                                <Button type="submit" onClick={authSwitch} fullWidth variant="contained" className={classes.submit}>Sign In</Button>
 
 
                             )}

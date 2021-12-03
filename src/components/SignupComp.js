@@ -3,7 +3,7 @@ import {
     Container, CssBaseline, Avatar, Typography,
     Button, Grid, makeStyles, Card, CardContent
 } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { LockRounded } from '@material-ui/icons';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { ToastContainer, toast } from 'react-toastify';
@@ -16,6 +16,7 @@ const SignupComp = (props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const navi = useNavigate();
 
     const handleEmail = (event) => {
         setEmail(event.target.value);
@@ -26,6 +27,17 @@ const SignupComp = (props) => {
     const handleConfirmPassowerd = (event) => {
         setConfirmPassword(event.target.value);
     }
+
+    const authSwitch = () => {
+        app.auth()
+            .createUserWithEmailAndPassword(email, password)
+            .then(response => {
+                if (response) {
+                    navi("/home")
+                }
+            })
+
+    }
     const handleSignUp = () => {
         app.auth()
             .createUserWithEmailAndPassword(email, password)
@@ -33,6 +45,7 @@ const SignupComp = (props) => {
                 if (response) {
                     props.toggle();
                     toast.success('User Registered Successfully');
+
                 }
             }).catch((error) => {
                 switch (error.code) {
@@ -116,6 +129,7 @@ const SignupComp = (props) => {
                             />
 
                             <Button
+                                onClick={authSwitch}
                                 type="submit"
                                 fullWidth
                                 variant="contained"

@@ -1,27 +1,40 @@
-import React , { useState} from 'react';
-import { AppBar, Toolbar, IconButton, Typography, Menu, MenuItem, makeStyles } from '@material-ui/core';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AppBar, Toolbar, IconButton, Typography, Menu, MenuItem, makeStyles, styled } from '@material-ui/core';
 import { AccountCircle } from '@material-ui/icons';
+import { Stack } from '@mui/material';
 
+import firebase from "firebase/app";
+import "firebase/auth";
 const NavBar = (props) => {
     const classes = useStyles();
     const [auth, setAuth] = useState(true);
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
+    const navi = useNavigate();
+
 
     const handleClose = () => {
-        localStorage.removeItem('user');
-        props.setUserState();
-        setAnchorEl(null);
+        firebase.auth().signOut().then(() => {
+            navi("/")
+            // Sign-out successful.
+        }).catch((error) => {
+            navi("/home")
+        });
+    }
+    const profileSetting = () => {
+
     }
 
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
     };
+    
     return (
-        <div className="root">
-            <AppBar position="static" className="menubackgroud">
+        <div className={classes.root}>
+            <AppBar position="static" className={classes.menubackgroud}>
                 <Toolbar>
-                    <Typography variant="h6" className="title">
+                    <Typography variant="h6" className={classes.title}>
                         Chat App
                     </Typography>
                     {auth && (
@@ -35,6 +48,7 @@ const NavBar = (props) => {
                             >
                                 <AccountCircle />
                             </IconButton>
+                            
                             <Menu
                                 id="menu-appbar"
                                 anchorEl={anchorEl}
@@ -48,16 +62,16 @@ const NavBar = (props) => {
                                     horizontal: 'right',
                                 }}
                                 open={open}
-                                onClose={handleClose}
-                            >
-                                <MenuItem>Profile</MenuItem>
-                                <MenuItem onClick={handleClose}>Logout</MenuItem>
+                                // onClose={handleClose}
+                            > 
+                            <MenuItem onClick={profileSetting}>Profile</MenuItem>
+                            <MenuItem onClick={handleClose}>Logout</MenuItem>
                             </Menu>
                         </div>
                     )}
-                </Toolbar>
-            </AppBar>
-        </div>
+            </Toolbar>
+        </AppBar>
+        </div >
     )
 }
 const useStyles = makeStyles((theme) => ({
@@ -66,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
     },
     menubackgroud: {
         background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
-    }, 
+    },
     title: {
         flexGrow: 1
     }
