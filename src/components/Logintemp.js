@@ -1,21 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { Link , useNavigate } from 'react-router-dom';
-import {
-    Container, CssBaseline, Avatar, Typography,
-    Button, Grid, makeStyles, Card, CardContent
-} from '@material-ui/core';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Container, CssBaseline, Avatar, Typography, FormControlLabel, Button, Checkbox, Grid, makeStyles, Card, CardContent } from '@material-ui/core';
 import { LockRounded } from '@material-ui/icons';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import fire from '../firebase/db';
+import app from '../firebase/db';
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'
+import { ScaleLoader } from 'react-spinners';
 
-
-const SignUp = () => {
+const LoginComp = (props) => {
     const classes = useStyles();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
+    const [rememberme, setRememberMe] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    const override = `
+    display: block;
+    margin-left: 100px;
+    border-color: red;
+`;
     const navi = useNavigate();
 
     const handleEmail = (event) => {
@@ -24,43 +27,40 @@ const SignUp = () => {
     const handlePassword = (event) => {
         setPassword(event.target.value);
     }
-    const handleConfirmPassowerd = (event) => {
-        setConfirmPassword(event.target.value);
+    const handleCheck = (event) => {
+        setRememberMe(event.target.checked);
     }
-    const handleSignUp = () => {
-        fire.auth()
+    const authSwitch = () => {
+        app.auth()
             .createUserWithEmailAndPassword(email, password)
             .then(response => {
+                const { user } = response;
                 if (response) {
-                    setTimeout(() => {navi("/home")}, 2000);
-                    toast.success('User Registered Successfully');                    
+                    navi("/home")
                 }
-            }).catch((error) => {
-                switch (error.code) {
-                    case 'auth/email-already-in-use':
-                        toast.error(error.message);
-                        break;
-                    case 'auth/invalid-email':
-                        toast.error(error.message);
-                        break;
-                    case 'auth/weak-password':
-                        toast.error(error.message);
-                        break;
-                }
-            });
+            })
     }
+    const handlerLogin = () => {
+        setLoading(true);
+        app.auth()
+            .signInWithEmailAndPassword(email, password)
+            .then(response => {
+                const { user } = response;
+                const data = {
+                    userId: user.uid,
+                    email: user.email
+                }
+                localStorage.setItem('user', JSON.stringify(data));
+                const storage = localStorage.getItem('user');
+                const loggedInUser = storage !== null ? JSON.parse(storage) : null;
+                props.loggedIn(loggedInUser);
+                setLoading(false);
+            }).catch(error => {
+                toast.error(error.message);
+                setLoading(false);
+            });
 
-    useEffect(() => {
-        ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
-            if (value !== password) {
-                return false;
-            }
-            return true;
-        });
-        return () => {
-            ValidatorForm.removeValidationRule('isPasswordMatch');
-        }
-    }, [password])
+    }
     return (
         <Container component="main" maxWidth="xs">
             <Card className={classes.card}>
@@ -72,10 +72,15 @@ const SignUp = () => {
                             <LockRounded />
                         </Avatar>
                         <Typography component="h1" variant="h5">
-                            Sign Up
+                            Sign In
                         </Typography>
                         <ValidatorForm
-                            onSubmit={handleSignUp}
+                            onSubmit={handlerLogin}
+                            onError={errors => {
+                                for (const err of errors) {
+                                    console.log(err.props.errorMessages[0])
+                                }
+                            }}
                             className={classes.form}>
                             <TextValidator
                                 variant="outlined"
@@ -87,9 +92,7 @@ const SignUp = () => {
                                 value={email}
                                 validators={['required', 'isEmail']}
                                 errorMessages={['this field is required', 'email is not valid']}
-                                autoComplete='off'
-                            />
-                            <br />
+                                autoComplete='off' />
                             <TextValidator
                                 variant="outlined"
                                 fullWidth
@@ -102,31 +105,27 @@ const SignUp = () => {
                                 errorMessages={['this field is required']}
                                 autoComplete="off"
                             />
-                            <br />
-                            <TextValidator
-                                variant="outlined"
-                                label="Confirm password"
-                                fullWidth
-                                onChange={handleConfirmPassowerd}
-                                name="confirmPassword"
-                                type="password"
-                                validators={['isPasswordMatch', 'required']}
-                                errorMessages={['password mismatch', 'this field is required']}
-                                value={confirmPassword}
-                                autoComplete="off"
+                            <FormControlLabel
+                                control={<Checkbox value={rememberme} onChange={(e) => handleCheck(e)} color="primary" />}
+                                label="Remember me"
                             />
-                            <Button
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                className={classes.submit}
-                            >
-                                Sign Up
-                            </Button>
+                            {loading ? (
+                                <ScaleLoader
+                                    css={override}
+                                    size={150}
+                                    color={"#eb4034"}
+                                    loading={loading} />
+                            ) : (
+
+                                <Button type="submit" onClick={authSwitch} fullWidth variant="contained" className={classes.submit}>Sign In</Button>
+
+
+                            )}
+
                             <Grid container>
                                 <Grid item>
-                                    <Link to='/login'  className={classes.pointer} variant="body2">
-                                        {"Already have an account? Sign In"}
+                                    <Link to='/signup' className={classes.pointer} variant="body2">
+                                        {"Don't have an account? Sign Up"}
                                     </Link>
                                 </Grid>
                             </Grid>
@@ -168,5 +167,5 @@ const useStyles = makeStyles((theme) => ({
         cursor: 'pointer',
         color: 'red'
     }
-}))
-export default SignUp;
+}));
+export default LoginComp;

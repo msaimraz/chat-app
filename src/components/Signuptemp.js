@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Link , useNavigate } from 'react-router-dom';
 import {
     Container, CssBaseline, Avatar, Typography,
     Button, Grid, makeStyles, Card, CardContent
 } from '@material-ui/core';
+import { Link, useNavigate } from 'react-router-dom';
 import { LockRounded } from '@material-ui/icons';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import fire from '../firebase/db';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
+import app from '../firebase/db';
 
 
-const SignUp = () => {
+const SignupComp = (props) => {
     const classes = useStyles();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -27,13 +27,25 @@ const SignUp = () => {
     const handleConfirmPassowerd = (event) => {
         setConfirmPassword(event.target.value);
     }
-    const handleSignUp = () => {
-        fire.auth()
+
+    const authSwitch = () => {
+        app.auth()
             .createUserWithEmailAndPassword(email, password)
             .then(response => {
                 if (response) {
-                    setTimeout(() => {navi("/home")}, 2000);
-                    toast.success('User Registered Successfully');                    
+                    navi("/home")
+                }
+            })
+
+    }
+    const handleSignUp = () => {
+        app.auth()
+            .createUserWithEmailAndPassword(email, password)
+            .then(response => {
+                if (response) {
+                    props.toggle();
+                    toast.success('User Registered Successfully');
+
                 }
             }).catch((error) => {
                 switch (error.code) {
@@ -115,7 +127,9 @@ const SignUp = () => {
                                 value={confirmPassword}
                                 autoComplete="off"
                             />
+
                             <Button
+                                onClick={authSwitch}
                                 type="submit"
                                 fullWidth
                                 variant="contained"
@@ -125,7 +139,7 @@ const SignUp = () => {
                             </Button>
                             <Grid container>
                                 <Grid item>
-                                    <Link to='/login'  className={classes.pointer} variant="body2">
+                                    <Link to='/login' className={classes.pointer} variant="body2">
                                         {"Already have an account? Sign In"}
                                     </Link>
                                 </Grid>
@@ -137,7 +151,6 @@ const SignUp = () => {
         </Container>
     );
 }
-
 const useStyles = makeStyles((theme) => ({
     paper: {
         marginTop: theme.spacing(8),
@@ -169,4 +182,5 @@ const useStyles = makeStyles((theme) => ({
         color: 'red'
     }
 }))
-export default SignUp;
+
+export default SignupComp

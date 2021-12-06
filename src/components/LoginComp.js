@@ -1,26 +1,28 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Container, CssBaseline, Avatar, Typography, FormControlLabel, Button, Checkbox, Grid, makeStyles, Card, CardContent } from '@material-ui/core';
+import {
+    Container, CssBaseline, Avatar, Typography, FormControlLabel,
+    Button, Checkbox, Grid, makeStyles, Card, CardContent
+} from '@material-ui/core';
 import { LockRounded } from '@material-ui/icons';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import app from '../firebase/db';
+import fire from '../firebase/db';
 import { ToastContainer, toast } from 'react-toastify';
 import { ScaleLoader } from 'react-spinners';
 
-const LoginComp = (props) => {
+const Login = (props) => {
     const classes = useStyles();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [rememberme, setRememberMe] = useState(false);
     const [loading, setLoading] = useState(false);
-
-    const override = `
-    display: block;
-    margin-left: 100px;
-    border-color: red;
-`;
     const navi = useNavigate();
 
+    const override = `
+        display: block;
+        margin-left: 100px;
+        border-color: red;
+    `;
     const handleEmail = (event) => {
         setEmail(event.target.value);
     }
@@ -30,19 +32,9 @@ const LoginComp = (props) => {
     const handleCheck = (event) => {
         setRememberMe(event.target.checked);
     }
-    const authSwitch = () => {
-        app.auth()
-            .createUserWithEmailAndPassword(email, password)
-            .then(response => {
-                const { user } = response;
-                if (response) {
-                    navi("/home")
-                }
-            })
-    }
     const handlerLogin = () => {
         setLoading(true);
-        app.auth()
+        fire.auth()
             .signInWithEmailAndPassword(email, password)
             .then(response => {
                 const { user } = response;
@@ -53,7 +45,7 @@ const LoginComp = (props) => {
                 localStorage.setItem('user', JSON.stringify(data));
                 const storage = localStorage.getItem('user');
                 const loggedInUser = storage !== null ? JSON.parse(storage) : null;
-                props.loggedIn(loggedInUser);
+                navi("/home");
                 setLoading(false);
             }).catch(error => {
                 toast.error(error.message);
@@ -76,11 +68,11 @@ const LoginComp = (props) => {
                         </Typography>
                         <ValidatorForm
                             onSubmit={handlerLogin}
-                            onError={errors => {
-                                for (const err of errors) {
-                                    console.log(err.props.errorMessages[0])
-                                }
-                            }}
+                            // onError={errors => {
+                            //     for (const err of errors) {
+                            //         console.log(err.props.errorMessages[0])
+                            //     }
+                            // }}
                             className={classes.form}>
                             <TextValidator
                                 variant="outlined"
@@ -116,10 +108,14 @@ const LoginComp = (props) => {
                                     color={"#eb4034"}
                                     loading={loading} />
                             ) : (
-
-                                <Button type="submit" onClick={authSwitch} fullWidth variant="contained" className={classes.submit}>Sign In</Button>
-
-
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    className={classes.submit}
+                                >
+                                    Sign In
+                                </Button>
                             )}
 
                             <Grid container>
@@ -168,4 +164,4 @@ const useStyles = makeStyles((theme) => ({
         color: 'red'
     }
 }));
-export default LoginComp;
+export default Login;

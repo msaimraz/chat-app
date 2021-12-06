@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppBar, Toolbar, IconButton, Typography, Menu, MenuItem, makeStyles, styled } from '@material-ui/core';
 import { AccountCircle } from '@material-ui/icons';
-import { Stack } from '@mui/material';
-
 import firebase from "firebase/app";
 import "firebase/auth";
 const NavBar = (props) => {
