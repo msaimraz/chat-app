@@ -1,23 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { Link , useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
     Container, CssBaseline, Avatar, Typography,
     Button, Grid, makeStyles, Card, CardContent
 } from '@material-ui/core';
 import { LockRounded } from '@material-ui/icons';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import {auth} from '../firebase/firebase';
+import { auth } from '../firebase/firebase';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
 const SignUp = () => {
     const classes = useStyles();
+    const [userName, setUserName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const navi = useNavigate();
 
+    const handleUserName = (event) => {
+        setUserName(event.target.value);
+    }
     const handleEmail = (event) => {
         setEmail(event.target.value);
     }
@@ -31,8 +35,8 @@ const SignUp = () => {
         auth.createUserWithEmailAndPassword(email, password)
             .then(response => {
                 if (response) {
-                    setTimeout(() => {navi("/home")}, 2000);
-                    toast.success('User Registered Successfully');                    
+                    setTimeout(() => { navi("/home") }, 2000);
+                    toast.success('User Registered Successfully');
                 }
             }).catch((error) => {
                 switch (error.code) {
@@ -76,6 +80,19 @@ const SignUp = () => {
                         <ValidatorForm
                             onSubmit={handleSignUp}
                             className={classes.form}>
+                            <TextValidator
+                                variant="outlined"
+                                margin="normal"
+                                fullWidth
+                                label="User Name"
+                                value={userName}
+                                onChange={handleUserName}
+                                name="userName"
+                                validators={['required']}
+                                errorMessages={['this field is required']}
+                                autoComplete='off'
+                            />
+
                             <TextValidator
                                 variant="outlined"
                                 margin="normal"
@@ -124,7 +141,7 @@ const SignUp = () => {
                             </Button>
                             <Grid container>
                                 <Grid item>
-                                    <Link to='/login'  className={classes.pointer} variant="body2">
+                                    <Link to='/login' className={classes.pointer} variant="body2">
                                         {"Already have an account? Sign In"}
                                     </Link>
                                 </Grid>
