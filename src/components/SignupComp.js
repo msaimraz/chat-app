@@ -6,9 +6,9 @@ import {
 } from '@material-ui/core';
 import { LockRounded } from '@material-ui/icons';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import fire from '../firebase/db';
+import {auth} from '../firebase/firebase';
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const SignUp = () => {
@@ -28,8 +28,7 @@ const SignUp = () => {
         setConfirmPassword(event.target.value);
     }
     const handleSignUp = () => {
-        fire.auth()
-            .createUserWithEmailAndPassword(email, password)
+        auth.createUserWithEmailAndPassword(email, password)
             .then(response => {
                 if (response) {
                     setTimeout(() => {navi("/home")}, 2000);

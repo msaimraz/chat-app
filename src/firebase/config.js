@@ -1,5 +1,3 @@
-import firebase from 'firebase';
-
 const firebaseConfig = {
     apiKey: "AIzaSyCihM02A7E6md86_QytotNHbHJ7JKjyM0o",
     authDomain: "chatapp-367e0.firebaseapp.com",
@@ -9,7 +7,4 @@ const firebaseConfig = {
     appId: "1:864484304588:web:377dfeb624db9af6510469"
 };
 
-// Initialize Firebase
-const fire = firebase.initializeApp(firebaseConfig);
-
-export default fire;
+export default firebaseConfig;

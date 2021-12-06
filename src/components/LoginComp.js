@@ -6,11 +6,12 @@ import {
 } from '@material-ui/core';
 import { LockRounded } from '@material-ui/icons';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import fire from '../firebase/db';
+import {auth ,db} from '../firebase/firebase';
 import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { ScaleLoader } from 'react-spinners';
 
-const Login = (props) => {
+const Login = () => {
     const classes = useStyles();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -34,8 +35,7 @@ const Login = (props) => {
     }
     const handlerLogin = () => {
         setLoading(true);
-        fire.auth()
-            .signInWithEmailAndPassword(email, password)
+        auth.signInWithEmailAndPassword(email, password)
             .then(response => {
                 const { user } = response;
                 const data = {
