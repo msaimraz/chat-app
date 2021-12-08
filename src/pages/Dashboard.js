@@ -1,7 +1,8 @@
-import { Card, CardActionArea, Button } from '@mui/material';
+import { Card, Button } from '@mui/material';
 import React, { useState, useEffect } from "react";
 import { auth, db } from '../firebase/firebase';
 import NavBar from '../components/NavBar';
+import '../components/style.css'
 
 const Dashboard = () => {
     const [user, setUser] = useState(null);
@@ -30,23 +31,21 @@ const Dashboard = () => {
             <NavBar />
             <h1>Dashboard</h1>
 
-            <div className="container">
-                <Card sx={{ maxWidth: 345 }}>
-                    <CardActionArea>
+            <div className='accountRoot'>
+                <Card sx={{ width:'100vh' }}  className='accountMain'>
                         <form>
                             <input type="file" name="postImage" id="postImage" onChange={handleImg}
                                 value={img}  />
                             {/* <input type="image" src="https://pkge.net/uploads/couriers/large/india-post.png?2" alt=""
                                 onChange={handleImg}
                                 value={img} /> */}
-                            <textarea cols="40" rows="15"
+                            <textarea cols="60" rows="15"
                                 onChange={handleText}
                                 type="text"
                                 value={text}
                                 autoComplete="off"></textarea>
-                            <Button variant="outlined" onClick={() => { addPost() }}>Post</Button>
+                            <Button variant="contained" onClick={() => { addPost() }}  className='btn'>Post</Button>
                         </form>
-                    </CardActionArea>
                 </Card>
             </div>
         </>
