@@ -11,7 +11,9 @@ const NavBar = () => {
 
     const navi = useNavigate();
 
-
+    const logo = () => {
+        navi("/home");
+    }
     const settings = [
         {
             name: 'Home', func: () => {
@@ -68,6 +70,7 @@ const NavBar = () => {
                             variant="h6"
                             noWrap
                             component="div"
+                            onClick={logo}
                             sx={{ flexGrow: 1, mr: 2, display: { xs: 'flex', md: 'flex' } }}
                         >
                             Chat-App
