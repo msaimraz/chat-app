@@ -6,13 +6,15 @@ import Dashboard from "../pages/Dashboard";
 import Settings from "../pages/Settings";
 import React, {useState, useEffect} from "react";
 import { auth } from "../firebase/firebase";
+
 const Routes = () => {
+
     const [user, setUser] = useState(null);
     useEffect(() => {
         auth.onAuthStateChanged(user =>{
-            if(user) setUser(user)
-            else setUser(null)
-        })
+            if(user) setUser(user);
+            else setUser(null);
+        });
     }, [])
 
 

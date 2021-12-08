@@ -22,7 +22,7 @@ const Login = () => {
     const override = `
         display: block;
         margin-left: 100px;
-        border-color: red;
+        border-color: '#8E2DE2';
     `;
     const handleEmail = (event) => {
         setEmail(event.target.value);
@@ -68,11 +68,11 @@ const Login = () => {
                         </Typography>
                         <ValidatorForm
                             onSubmit={handlerLogin}
-                            // onError={errors => {
-                            //     for (const err of errors) {
-                            //         console.log(err.props.errorMessages[0])
-                            //     }
-                            // }}
+                            onError={errors => {
+                                for (const err of errors) {
+                                    console.log(err.props.errorMessages[0])
+                                }
+                            }}
                             className={classes.form}>
                             <TextValidator
                                 variant="outlined"
@@ -105,7 +105,7 @@ const Login = () => {
                                 <ScaleLoader
                                     css={override}
                                     size={150}
-                                    color={"#eb4034"}
+                                    color={'#4A00E0'}
                                     loading={loading} />
                             ) : (
                                 <Button
@@ -142,14 +142,14 @@ const useStyles = makeStyles((theme) => ({
     },
     avatar: {
         margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: '#8E2DE2'
     },
     form: {
         width: '100%', // Fix IE 11 issue.
         marginTop: theme.spacing(1),
     },
     submit: {
-        background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+        background: 'linear-gradient(to right, #8e2de2, #4a00e0)',
         margin: theme.spacing(3, 0, 2),
         color: '#fff'
     },
@@ -161,7 +161,7 @@ const useStyles = makeStyles((theme) => ({
     },
     pointer: {
         cursor: 'pointer',
-        color: 'red'
+        color: '#4A00E0'
     }
 }));
 export default Login;
