@@ -1,17 +1,13 @@
 import React from "react";
-// import { Link  } from 'react-router-dom';
-import {CssBaseline } from "@mui/material";
+import { CssBaseline } from "@mui/material";
 import NavBar1 from "../components/NavBar1";
 
 const Home = () => {
 
     return (
-        <CssBaseline> 
+        <CssBaseline>
             <NavBar1 />
             <h1>Home</h1>
-            {/* <Link to='/Login' ><Button variant="outlined">Login</Button></Link>
-            <Link to='/Signup' ><Button variant="outlined">Sign Up</Button></Link> */}
-
         </CssBaseline>
     );
 };

@@ -7,11 +7,8 @@ const Settings = () => {
     return (
         <CssBaseline>
             <NavBar />
-
             <Typography variant='h3' component="div" gutterBottom align='center'>Settings</Typography>
-
             <Account />
-
         </CssBaseline>
     )
 }
