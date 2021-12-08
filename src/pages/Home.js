@@ -1,6 +1,6 @@
 import React from "react";
-import { Link  } from 'react-router-dom';
-import { Button, CssBaseline } from "@mui/material";
+// import { Link  } from 'react-router-dom';
+import {CssBaseline } from "@mui/material";
 import NavBar1 from "../components/NavBar1";
 
 const Home = () => {

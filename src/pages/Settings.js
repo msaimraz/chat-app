@@ -1,7 +1,7 @@
 import React from 'react';
 import Account from '../components/Account';
 import NavBar from '../components/NavBar';
-import { Button, CssBaseline, Typography } from "@mui/material";
+import {CssBaseline, Typography } from "@mui/material";
 
 const Settings = () => {
     return (
