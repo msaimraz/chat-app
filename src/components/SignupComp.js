@@ -87,7 +87,7 @@ const SignUp = () => {
                                 label="User Name"
                                 value={userName}
                                 onChange={handleUserName}
-                                name="userName"
+                                // name="userName"
                                 validators={['required']}
                                 errorMessages={['this field is required']}
                                 autoComplete='off'
@@ -99,7 +99,7 @@ const SignUp = () => {
                                 fullWidth
                                 label="Email"
                                 onChange={handleEmail}
-                                name="email"
+                                // name="email"
                                 value={email}
                                 validators={['required', 'isEmail']}
                                 errorMessages={['this field is required', 'email is not valid']}
@@ -111,7 +111,7 @@ const SignUp = () => {
                                 fullWidth
                                 label="Password"
                                 onChange={handlePassword}
-                                name="password"
+                                // name="password"
                                 type="password"
                                 value={password}
                                 validators={['required']}
@@ -124,7 +124,7 @@ const SignUp = () => {
                                 label="Confirm password"
                                 fullWidth
                                 onChange={handleConfirmPassowerd}
-                                name="confirmPassword"
+                                // name="confirmPassword"
                                 type="password"
                                 validators={['isPasswordMatch', 'required']}
                                 errorMessages={['password mismatch', 'this field is required']}

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-import { AppBar, Toolbar, Typography, Container, MenuItem, Avatar } from '@mui/material';
+import { AppBar, Toolbar, Typography, Container, MenuItem } from '@mui/material';
 import './style.css'
 const NavBar1 = () => {
 

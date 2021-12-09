@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 import { LockRounded } from '@material-ui/icons';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import {auth ,db} from '../firebase/firebase';
+import { auth, db } from '../firebase/firebase';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { ScaleLoader } from 'react-spinners';

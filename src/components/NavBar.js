@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Avatar, Button, Tooltip, MenuItem, CssBaseline } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
+import { AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Avatar, Tooltip, MenuItem, CssBaseline } from '@mui/material';
 import { auth } from '../firebase/firebase';
-const pages = ['Home', 'About Us', 'Login', 'Sign Up'];
-// const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+// const pages = ['Home', 'About Us', 'Login', 'Sign Up'];
 
 const NavBar = () => {
 
@@ -92,7 +89,7 @@ const NavBar = () => {
                                 keepMounted
                                 transformOrigin={{
                                     vertical: 'top',
-                                    horizontal: 'right',
+                                    horizontal: 'right'
                                 }}
                                 open={Boolean(anchorElUser)}
                                 onClose={handleCloseUserMenu}
