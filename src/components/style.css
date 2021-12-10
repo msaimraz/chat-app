@@ -10,11 +10,20 @@
   justify-content: center;
 }
 .accountMain {
-  text-align: center;
-  padding: 6vh;
+  padding: 2vh;
   border: 1px solid #8e2de2;
 }
 .btn {
   background: linear-gradient(to right, #8e2de2, #4a00e0);
   color: #ffff;
+}
+.iconBtn1{
+  color: #8e2de2 !important;
+}
+.iconBtn2{
+    color: #4a00e0 !important;
+}
+.imgSize{
+  height: 200px;
+  width: 200px;
 }

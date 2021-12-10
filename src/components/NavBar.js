@@ -18,12 +18,12 @@ const NavBar = () => {
             }
         },
         {
-            name: 'Profile', func: () => {
+            name: 'Settings', func: () => {
                 navi("/setting");
             }
         },
 
-        { name: 'Account' },
+        // { name: 'Account' },
 
         {
             name: 'Logout', func: () => {
@@ -35,7 +35,7 @@ const NavBar = () => {
                     // An error happened.
                     console.log("user is not logout");
                 });
-                // auth.signOut(navi("/"));
+                auth.signOut(navi("/"));
 
             }
         }
@@ -75,7 +75,9 @@ const NavBar = () => {
                         <Box sx={{ flexGrow: 0 }}>
                             <Tooltip title="Open settings">
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                    <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                                    <Avatar 
+                                    src={URL} 
+                                    />
                                 </IconButton>
                             </Tooltip>
                             <Menu

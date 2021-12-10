@@ -1,22 +1,55 @@
-import React, { useState, useEffect } from "react";
-import { Card, Button } from '@mui/material';
+import React, { useState, useEffect} from "react";
+import { useNavigate } from 'react-router-dom';
+import { Card, Button, Box, TextField, IconButton, Stack, Typography } from '@mui/material';
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import { styled } from '@mui/material/styles';
 import { auth, db, storage } from '../firebase/firebase';
+import { spacing } from '@mui/system';
 import './style.css';
-
+const theme = {
+    spacing: 8,
+}
 const CreatePost = () => {
-    const [user, setUser] = useState(null);
 
+    let unsubscribe =()=>[]
+
+    const [user, setUser] = useState('');
     useEffect(() => {
         auth.onAuthStateChanged(user => {
-            if (user) setUser(user)
-            else setUser(null)
-        })
-    }, [])
+            if (user) setUser(user);
+            else setUser(null);
+        });
+    }, []) 
+    const navi = useNavigate();
     const [text, setText] = useState('');
     const [image, setImage] = useState('');
     const [url, setUrl] = useState("");
     const [progress, setProgress] = useState('');
+    const [mytext, setMyText] = useState([]);
+    const [myimage, setMyImage] = useState([]);
+    useEffect(() => {
+        if (user) {
+            const docRef = db.collection('Posts').doc(user.uid)
+            unsubscribe = docRef.onSnapshot(docSnap => {
+                if (docSnap.exists) {
+                    console.log(docSnap.data().PostText);
+                    console.log(docSnap.data(url).PostImage);
+                    setMyText(docSnap.data().PostText);
+                    setMyImage(docSnap.data(url).PostImage);
+                } else {
+                    console.log("nothing");
+                }
+            });
+        } 
+        // else {
+        //     navi('/')
+        // }
 
+        return () => {
+            unsubscribe()
+        }
+
+    }, []);
     const handleText = (event) => {
         setText(event.target.value);
     }
@@ -25,6 +58,9 @@ const CreatePost = () => {
             setImage(e.target.files[0]);
         }
     }
+    const Input = styled('input')({
+        display: 'none'
+    });
     const uploadImage = () => {
         const uploadTask = storage.ref(`Images/${image.name}`).put(image);
         uploadTask.on("state_changed",
@@ -47,28 +83,53 @@ const CreatePost = () => {
     };
     const addPost = () => {
         db.collection('Posts').doc(user.uid).set({
-            PostText: text,
-            postImage: url
+            PostText: [...mytext, text],
+            PostImage: [...myimage, url]
         })
     };
     return (
-        <div className='accountRoot'>
-            <Card sx={{ width: '100vh' }} className='accountMain'>
-                <form>
-                    <input type="file" onChange={handleImg} />
-                    <Button variant="contained" onClick={uploadImage} className='btn'>Upload Image</Button>
-                    <h2>Uploading done {progress}%</h2>
-                    <img className='imgSize' src={url || "https://via.placeholder.com/300x300"} />
-                    <textarea cols="50" rows="15"
-                        onChange={handleText}
-                        type="text"
-                        value={text}
-                        autoComplete="off"></textarea>
+        <>
+            <Card sx={{ height: 'auto', width: '60%', m: 'auto', p: 'auto' }} className='accountRoot accountMain'>
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <label htmlFor="icon-button-file">
+                        <Input accept="image/*" id="icon-button-file" type="file" onChange={handleImg} />
+                        <IconButton color="primary" aria-label="upload picture" component="span">
+                            <Stack>
+                                <PhotoCamera />
+                            </Stack>
+                        </IconButton>
+                        <Button variant="contained" onClick={uploadImage} className='btn'>Upload Image</Button>
+                    </label>
+                    <Typography variant='h6' component="div" gutterBottom>Uploading done {progress}%</Typography>
+                    <img className='imgSize' alt="img" src={url || "https://via.placeholder.com/1080x1080"} />
+                    <br />
+                    <label>
+                        <TextField sx={{ width: '40vw', my: 2 }}
+                            onChange={handleText}
+                            multiline
+                            rows={4}
+                            type="text"
+                            value={text}
+                            autoComplete="off" />
+                    </label>
                     <Button variant="contained" onClick={addPost} className='btn'>Post</Button>
-                </form>
+                </Box>
+
             </Card>
-        </div>
+            <Card sx={{ height: 'auto', width: '60%', m: 'auto', p: 'auto' }} className='accountRoot accountMain'>
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <label>
+                        {myimage.map(url => {
+                            <img className='imgSize' alt="" src={url || "https://via.placeholder.com/1080x1080"} />
+
+                        })}
+                        {mytext.map(text => {
+                            <TextField sx={{ width: '40vw', my: 2 }} type="text" />
+                        })}
+                    </label>
+                </Box>
+            </Card>
+        </>
     )
 }
-
 export default CreatePost

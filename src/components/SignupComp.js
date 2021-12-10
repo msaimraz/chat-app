@@ -13,15 +13,11 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const SignUp = () => {
     const classes = useStyles();
-    const [userName, setUserName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const navi = useNavigate();
 
-    const handleUserName = (event) => {
-        setUserName(event.target.value);
-    }
     const handleEmail = (event) => {
         setEmail(event.target.value);
     }
@@ -80,19 +76,6 @@ const SignUp = () => {
                         <ValidatorForm
                             onSubmit={handleSignUp}
                             className={classes.form}>
-                            <TextValidator
-                                variant="outlined"
-                                margin="normal"
-                                fullWidth
-                                label="User Name"
-                                value={userName}
-                                onChange={handleUserName}
-                                // name="userName"
-                                validators={['required']}
-                                errorMessages={['this field is required']}
-                                autoComplete='off'
-                            />
-
                             <TextValidator
                                 variant="outlined"
                                 margin="normal"
