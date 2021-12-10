@@ -7,7 +7,6 @@ const Dashboard = () => {
     return (
         <>
             <NavBar />
-
             <h1>Dashboard</h1>
 
             <CreatePost />
