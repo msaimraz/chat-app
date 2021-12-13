@@ -6,6 +6,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import { styled, alpha } from '@mui/material/styles';
 import { queries } from '@testing-library/dom';
+import SearchName from './SearchName';
 // const pages = ['Home', 'About Us', 'Login', 'Sign Up'];
 
 
@@ -84,21 +85,25 @@ const NavBar = () => {
             }
         }
     ];
-    const [search, setSearch] = useState('');
-    const searchUser = () => {
-        db.collection("Profile").get().then((querySnapshot) => {
-            let name = querySnapshot.docs.map(doc => doc.data().Name)
-            console.log(name);
-            {
-                name.map((post) => (
-                  <div key={post.name}>
-                    <p>{post.name}</p>
-                  </div>
-                ));
-              }
-        })
-        
+    const [search, setSearch] = useState("");
+    const searchUser = (event) => {
+        const data = event.target.value;
+        console.log(data);
+        setSearch(data);
+        // setSearch(data);
     }
+    // db.collection("Profile").get().then((querySnapshot) => {
+    //     let name = querySnapshot.docs.map(doc => doc.data().Name)
+    //     console.log(name);
+    //     // {
+    //     //     name.map((post) => (
+    //     //         <div key={post.name}>
+    //     //             <p>{post.name}</p>
+    //     //         </div>
+    //     //     ));
+    //     // }
+    // })
+
     // const classes = useStyles();
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
@@ -131,18 +136,22 @@ const NavBar = () => {
                         >
                             Chat-App
                         </Typography>
-                        <Search >
-                            <SearchIconWrapper sx={{ cursor: 'pointer' }}>
+                        <div >
+                            <input type='text' placeholder="Search…" onChange={searchUser} value={search}  />
+                            {/* <SearchIconWrapper sx={{ cursor: 'pointer' }}>
                                 <SearchIcon />
                             </SearchIconWrapper>
                             <StyledInputBase
+                            value={search}
                                 onClick={searchUser}
+                                onChange={searchUser}
                                 placeholder="Search…"
                                 inputProps={{ 'aria-label': 'search' }}
                                 onChange={event => setSearch(event.target.value)}
-                            />
-                            
-                        </Search>
+                            /> */}
+                            <SearchName sname ={search} />
+                        </div>
+
 
                         <Box sx={{ flexGrow: 0 }}>
                             <Tooltip title="Open settings">
