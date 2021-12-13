@@ -3,9 +3,7 @@ import { db } from '../firebase/firebase'
 
 const SearchName = (props) => {
     const searchName = db.collection("Profile").get().then((querySnapshot) => {
-        let search = querySnapshot.docs.map(doc => doc.data().Name)
-        const result = `name${props.sname}`
-        
+        let search = querySnapshot.docs.map(doc => doc.data().Name)        
         // {
         //     name.map((post) => (
         //         <div key={post.name}>
@@ -14,6 +12,7 @@ const SearchName = (props) => {
         //     ));
         // }
     })
+    const result = `searchName${props.sname}`
     return (
         <>
         {console.log(result)}
