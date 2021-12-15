@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 // import { useNavigate } from 'react-router-dom';
-import { Card, Button, Box, TextField, IconButton, Stack, Typography } from '@mui/material';
+import { Card, Button, Box, TextField, IconButton, Stack, Typography, Paper, Fade, Popper } from '@mui/material';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import PopupState, { bindToggle, bindPopper } from 'material-ui-popup-state';
 import { styled } from '@mui/material/styles';
 import { auth, db, storage } from '../firebase/firebase';
 import './style.css';
@@ -42,9 +43,9 @@ const CreatePost = () => {
         //     navi('/')
         // }
 
-        // return () => {
-        //     unsubscribe()
-        // }
+        return () => {
+            unsubscribe()
+        }
 
     }, []);
     const handleText = (event) => {
@@ -83,36 +84,58 @@ const CreatePost = () => {
             PostText: [...mytext, text],
             PostImage: [...myimage, url]
         })
+
     };
     return (
         <>
-            <Card sx={{ height: 'auto', width: '60%', m: 'auto', p: 'auto' }} className='accountRoot accountMain'>
-                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <label htmlFor="icon-button-file">
-                        <Input accept="image/*" id="icon-button-file" type="file" onChange={handleImg} />
-                        <IconButton color="primary" aria-label="upload picture" component="span">
-                            <Stack>
-                                <PhotoCamera />
-                            </Stack>
-                        </IconButton>
-                        <Button variant="contained" onClick={uploadImage} className='btn'>Upload Image</Button>
-                    </label>
-                    <Typography variant='h6' component="div" gutterBottom>Uploading done {progress}%</Typography>
-                    <img className='imgSize' alt="img" src={url || "https://via.placeholder.com/1080x1080"} />
-                    <br />
-                    <label>
-                        <TextField sx={{ width: '40vw', my: 2 }}
-                            onChange={handleText}
-                            multiline
-                            rows={4}
-                            type="text"
-                            value={text}
-                            autoComplete="off" />
-                    </label>
-                    <Button variant="contained" onClick={addPost} className='btn'>Post</Button>
-                </Box>
-
-            </Card>
+            <PopupState variant="popper" popupId="demo-popup-popper">
+                {(popupState) => (
+                    <div>
+                        <Button variant="contained" {...bindToggle(popupState)}>
+                            Create Post
+                        </Button>
+                        <Popper {...bindPopper(popupState)} transition>
+                            {({ TransitionProps }) => (
+                                <Fade {...TransitionProps} timeout={350}>
+                                    <Paper>
+                                        {/* Create Post */}
+                                        <Card 
+                                        // sx={{ height: 'auto', width: '60%', m: 'auto', p: 'auto' }} 
+                                        className='accountRoot accountMain'>
+                                            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                                <label htmlFor="icon-button-file">
+                                                    <Input accept="image/*" id="icon-button-file" type="file" onChange={handleImg} />
+                                                    <IconButton color="primary" aria-label="upload picture" component="span">
+                                                        <Stack>
+                                                            <PhotoCamera />
+                                                        </Stack>
+                                                    </IconButton>
+                                                    <Button variant="contained" onClick={uploadImage} className='btn'>Upload Image</Button>
+                                                </label>
+                                                <Typography variant='h6' component="div" gutterBottom>Uploading done {progress}%</Typography>
+                                                <img className='imgSize' alt="img" src={url || "https://via.placeholder.com/1080x1080"} />
+                                                <br />
+                                                <label>
+                                                    <TextField 
+                                                    // sx={{ width: '40vw', my: 2 }}
+                                                        onChange={handleText}
+                                                        multiline
+                                                        rows={4}
+                                                        type="text"
+                                                        value={text}
+                                                        autoComplete="off" />
+                                                </label>
+                                                <Button variant="contained" onClick={addPost} className='btn'>Post</Button>
+                                            </Box>
+                                        </Card>
+                                    </Paper>
+                                </Fade>
+                            )}
+                        </Popper>
+                    </div>
+                )}
+            </PopupState>
+                                {/* All Posts */}
             <Card sx={{ height: 'auto', width: '80%', m: 'auto', p: 'auto' }} className='accountRoot accountMain'>
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <label className='collection'>
@@ -120,9 +143,11 @@ const CreatePost = () => {
                             return <img className='imgSize' alt="" src={url} />
 
                         })}
+                        <br />
                         {mytext.map(text => {
                             return <TextField sx={{ width: '40vw', my: 2 }} type="text" className='collection-item' value={text} />
                         })}
+                        <br />
                     </label>
                 </Box>
             </Card>
