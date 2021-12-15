@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 // import { useNavigate } from 'react-router-dom';
 import { Card, Button, Box, TextField, IconButton, Stack, Typography, Paper, Fade, Popper } from '@mui/material';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import PopupState, { bindToggle, bindPopper } from 'material-ui-popup-state';
 import { styled } from '@mui/material/styles';
 import { auth, db, storage } from '../firebase/firebase';
@@ -92,7 +93,7 @@ const CreatePost = () => {
                 {(popupState) => (
                     <div>
                         <Button variant="contained" {...bindToggle(popupState)}>
-                            Create Post
+                            <AddCircleIcon />
                         </Button>
                         <Popper {...bindPopper(popupState)} transition>
                             {({ TransitionProps }) => (
