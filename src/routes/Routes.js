@@ -7,7 +7,8 @@ import Settings from "../pages/Settings";
 import React, {useState, useEffect} from "react";
 import { auth } from "../firebase/firebase";
 
-const Routes = () => {
+
+const Routes = (dataStore) => {
 
     const [user, setUser] = useState(null);
     useEffect(() => {
@@ -23,7 +24,7 @@ const Routes = () => {
             <Route path="*" element={<Home />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/home" element={<Dashboard user={user}/>} />
+            <Route path="/home/" element={<Dashboard user={user}/>} />
             <Route path="/setting" element={<Settings/>} />
         </AppRoutes>
     )   
