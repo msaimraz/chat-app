@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { CssBaseline, Typography, TextField, Card, IconButton, Stack, Avatar, Box } from '@mui/material';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'; import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'; import CheckCircleIcon from '@mui/icons-material/CheckCircle'; import UploadIcon from '@mui/icons-material/Upload'; import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
-import { spacing } from '@mui/system';
 import { styled } from '@mui/material/styles';
 import { auth, db, storage } from '../firebase/firebase';
 import './style.css'
-const theme = {
-        spacing: 8,
-    }
+
 const Account = () => {
 
     const [user, setUser] = useState(null);

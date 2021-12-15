@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppBar, Box, Toolbar, IconButton, Typography, Menu, Container, Avatar, Tooltip, MenuItem, CssBaseline } from '@mui/material';
 import { auth, db } from '../firebase/firebase';
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import { styled, alpha } from '@mui/material/styles';
-import { queries } from '@testing-library/dom';
 import './style.css'
 // const pages = ['Home', 'About Us', 'Login', 'Sign Up'];
 
@@ -210,7 +209,7 @@ const NavBar = () => {
                             >
 
                                 {settings.map((setting) => (
-                                    <MenuItem key={setting.name} onClick={handleCloseNavMenu, setting.func}>
+                                    <MenuItem key={setting.name} onClick={function(){handleCloseNavMenu(); setting.func();}}>
                                         <Typography textAlign="center">{setting.name}</Typography>
                                     </MenuItem>
                                 ))}
