@@ -9,6 +9,7 @@ const SearchData = (filteredData) => {
     
     return (
         <>
+        <h1>Hello </h1>
         </>
     )
 }
